@@ -4,9 +4,8 @@
   "description": "",
   "main": "sw.js",
   "scripts": {
-    "test": "npm run test:playwright && npm run test:cypress",
-    "test:playwright": "playwright test",
-    "test:cypress": "cypress run --browser chrome"
+    "test": "playwright test",
+    "test:playwright": "playwright test"
   },
   "repository": {
     "type": "git",
@@ -22,7 +21,6 @@
   "homepage": "https://github.com/digitaledsafety/template-pwa#readme",
   "devDependencies": {
     "@playwright/test": "^1.58.2",
-    "cypress": "^15.13.0",
     "serve": "^14.2.6"
   }
 }
