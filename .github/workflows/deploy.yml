@@ -38,9 +38,12 @@ jobs:
 
       - name: Run Playwright tests
         run: npx playwright test
-
+        
   deploy:
     needs: test
+    # This line ensures the job only runs on the main branch. 
+    # It will be marked as "skipped" on Pull Requests.
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
