@@ -48,3 +48,46 @@ test('Manifest has required fields for Android Chrome installation', async ({ pa
     expect(['narrow', 'wide']).toContain(screenshot.form_factor);
   });
 });
+
+test('style.css and app.js are linked and exist', async ({ page }) => {
+  await page.goto('/');
+
+  const styleLink = await page.$('link[href="style.css"]');
+  expect(styleLink).not.toBeNull();
+
+  const scriptTag = await page.$('script[src="app.js"]');
+  expect(scriptTag).not.toBeNull();
+});
+
+test('Online/Offline badge updates correctly', async ({ page, context }) => {
+  await page.goto('/');
+  const badge = page.locator('#status-badge');
+  await expect(badge).toHaveText('Online');
+  await expect(badge).toHaveClass(/online/);
+
+  // Emulate offline mode
+  await context.setOffline(true);
+  await expect(badge).toHaveText('Offline');
+  await expect(badge).toHaveClass(/offline/);
+
+  // Emulate online mode
+  await context.setOffline(false);
+  await expect(badge).toHaveText('Online');
+  await expect(badge).toHaveClass(/online/);
+});
+
+test('No console or CSP errors', async ({ page }) => {
+  const errors = [];
+  page.on('console', msg => {
+    if (msg.type() === 'error') {
+      errors.push(msg.text());
+    }
+  });
+  page.on('pageerror', err => {
+    errors.push(err.message);
+  });
+
+  await page.goto('/');
+  // Filter out any unrelated network requests if any
+  expect(errors).toEqual([]);
+});

@@ -3,8 +3,12 @@ const ASSETS = [
   './',
   './index.html',
   './manifest.json',
+  './style.css',
+  './app.js',
   './icon-192.png',
-  './icon-512.png'
+  './icon-512.png',
+  './screenshot-mobile.png',
+  './screenshot-desktop.png'
 ];
 
 self.addEventListener('install', event => {
@@ -27,6 +31,13 @@ self.addEventListener('activate', event => {
 });
 
 self.addEventListener('fetch', event => {
+  // Only handle GET requests from http or https schemes.
+  // This prevents errors with chrome-extension://, file://, or non-GET requests.
+  const url = new URL(event.request.url);
+  if (event.request.method !== 'GET' || !url.protocol.startsWith('http')) {
+    return;
+  }
+
   event.respondWith(
     caches.match(event.request)
       .then(response => response || fetch(event.request))
