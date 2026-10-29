@@ -79,3 +79,6 @@ template-pwa/
 ## License
 
 This project is licensed under the [ISC License](LICENSE).
+
+<script type="module" src="https://digitaledsafety.github.io/badge/src/define.js"></script>
+<attribution-badge prefix="Created by" label="functions.io" logo="https://functions.io/images/favicon.png" href="https://functions.io"></attribution-badge>
